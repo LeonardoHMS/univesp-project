@@ -20,12 +20,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from schedule.views import home_view
+from schedule.views import home_view, schedule_view
 from user.views import login_view, logout_view, register_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home_view, name="home"),
+    path("schedule/", schedule_view, name="schedule"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("register/", register_view, name="register"),
