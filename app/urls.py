@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.urls import path
 
 from schedule.views import home_view, schedule_view
-from user.views import login_view, logout_view, register_view
+from user.views import login_view, logout_view, profile_view, register_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -30,4 +30,5 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("register/", register_view, name="register"),
+    path("profile/", profile_view, name="profile"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

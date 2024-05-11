@@ -1,0 +1,18 @@
+{% extends "global/base.html" %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+<div class="schedule-content">
+    <h1>Meus agendamentos</h1>
+    <br>
+    {% for schedule in schedules %}
+        <div class="">
+            <h2>{{ schedule.date_hour }}</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ schedule.id }}">
+                <button onclick=RemoveSchedule() class="button-cancel">Cancelar</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}

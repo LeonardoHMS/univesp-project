@@ -1,6 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import redirect, render
+
+from schedule.models import Schedule
 
 
 def login_view(request):
@@ -33,3 +36,18 @@ def register_view(request):
     else:
         user_form = UserCreationForm()
     return render(request, "register.html", {"user_form": user_form})
+
+
+@login_required(login_url="/login/")
+def profile_view(request):
+    schedules = (
+        Schedule.objects.filter(user=request.user)
+        .filter(conclude=False)
+        .order_by("-id")
+    )
+
+    if request.method == "POST":
+        schedule = Schedule.objects.filter(id=request.POST.get("id"))
+        schedule.delete()
+
+    return render(request, "profile.html", {"schedules": schedules})

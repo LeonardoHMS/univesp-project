@@ -39,10 +39,9 @@ body {
     font-style: normal;
   }
   
-  ul {
+ul {
     margin: 0;
   }
-  
   
 h2 {
   text-align: center;
@@ -206,4 +205,39 @@ footer {
   display: flex; /* Torna o footer um container flexível */
   justify-content: center; /* Centraliza o conteúdo horizontalmente */
   align-items: center; /* Centraliza o conteúdo verticalmente */
+}
+
+.schedule-content {
+  margin: 0 auto;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background-color: black;
+}
+
+.schedule-content h1, p{
+  color: white;
+  margin-bottom: 30px;
+}
+
+.schedule-content p {
+  font-size: 30px;
+}
+
+.schedule-content button {
+  width: 200px;
+  height: 50px;
+  font-size: 30px;
+  color: white;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.button-cancel {
+  background-color: red;
+}
+
+.button-confirm {
+  background-color: green;
 }

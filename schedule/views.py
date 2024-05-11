@@ -1,6 +1,7 @@
 from datetime import datetime, time, timedelta
 
 from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from .models import Schedule, TypeOfCut
@@ -10,13 +11,13 @@ def home_view(request):
     return render(request, "home.html")
 
 
+@login_required(login_url="/login/")
 def schedule_view(request):
     date_now = datetime.now().date()  # Dia atual
     date_required = date_now + timedelta(days=1)  # Próximo dia
 
     # Horários já agendados
     schedules_hours = Schedule.objects.filter(date_hour__date=date_required)
-
     # Horários disponíveis
     available_hour = []
     for hour in range(8, 20):
@@ -35,13 +36,16 @@ def schedule_view(request):
         date = request.POST["appointmentDate"]
         hour = request.POST["appointmentTime"]
         type_service = request.POST["serviceType"]
-        # obs = request.POST["additionalNotes"]
+        obs = request.POST["additionalNotes"]
         date_hour_str = f"{date} {hour}"
         date_hour = datetime.strptime(date_hour_str, "%Y-%m-%d %H:%M")
 
         new_schedule = Schedule(
             date_hour=date_hour,
-            type_of_cut=TypeOfCut.objects.all().filter(type_cut=type_service).first(),
+            type_of_cut=TypeOfCut.objects.all()
+            .filter(type_cut=type_service)
+            .first(),  # Noqa: E501
+            obs=obs,
             user=get_user(request),
         )
         new_schedule.save()

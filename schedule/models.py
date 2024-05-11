@@ -18,6 +18,8 @@ class Schedule(models.Model):
         TypeOfCut,
         on_delete=models.PROTECT,
     )  # Noqa
+    obs = models.TextField(max_length=255, null=True)
+    conclude = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
