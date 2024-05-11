@@ -32,32 +32,47 @@ def schedule_view(request):
 
     type_of_cut = TypeOfCut.objects.all().order_by("type_cut")
 
-    if request.method == "POST":
-        date = request.POST["appointmentDate"]
-        hour = request.POST["appointmentTime"]
-        type_service = request.POST["serviceType"]
-        obs = request.POST["additionalNotes"]
-        date_hour_str = f"{date} {hour}"
-        date_hour = datetime.strptime(date_hour_str, "%Y-%m-%d %H:%M")
+    try:
+        if request.method == "POST":
+            date = request.POST["appointmentDate"]
+            hour = request.POST["appointmentTime"]
+            type_service = request.POST["serviceType"]
+            obs = request.POST["additionalNotes"]
+            date_hour_str = f"{date} {hour}"
+            date_hour = datetime.strptime(date_hour_str, "%Y-%m-%d %H:%M")
 
-        new_schedule = Schedule(
-            date_hour=date_hour,
-            type_of_cut=TypeOfCut.objects.all()
-            .filter(type_cut=type_service)
-            .first(),  # Noqa: E501
-            obs=obs,
-            user=get_user(request),
+            if date_hour < datetime.now():
+                raise Exception()
+
+            new_schedule = Schedule(
+                date_hour=date_hour,
+                type_of_cut=TypeOfCut.objects.all()
+                .filter(type_cut=type_service)
+                .first(),  # Noqa: E501
+                obs=obs,
+                user=get_user(request),
+            )
+            new_schedule.save()
+            return redirect("home")
+        else:
+            ...
+
+        return render(
+            request,
+            "schedule.html",
+            {
+                "available_hour": available_hour,
+                "type_of_cut": type_of_cut,
+            },  # Noqa: E501
         )
-        new_schedule.save()
-        return redirect("home")
-    else:
-        ...
-
-    return render(
-        request,
-        "schedule.html",
-        {
-            "available_hour": available_hour,
-            "type_of_cut": type_of_cut,
-        },  # Noqa: E501
-    )
+    except Exception:
+        error = "Horário não disponível"
+        return render(
+            request,
+            "schedule.html",
+            {
+                "available_hour": available_hour,
+                "type_of_cut": type_of_cut,
+                "error": error,
+            },
+        )  # Noqa: E501

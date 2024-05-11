@@ -9,7 +9,12 @@ class TypeOfCutAdmin(admin.ModelAdmin):
 
 
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ("date_hour", "type_of_cut", "user")
+    list_display = (
+        "date_hour",
+        "type_of_cut",
+        "user",
+        "conclude",
+    )
     search_fields = ("type_of_cut",)
 
 

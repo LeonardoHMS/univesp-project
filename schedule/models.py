@@ -13,7 +13,7 @@ class TypeOfCut(models.Model):
 
 class Schedule(models.Model):
     id = models.AutoField(primary_key=True)
-    date_hour = models.DateTimeField(null=True)
+    date_hour = models.DateTimeField(null=True, unique=True)
     type_of_cut = models.ForeignKey(
         TypeOfCut,
         on_delete=models.PROTECT,
